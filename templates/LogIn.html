@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block body %}
+<div class="login">
+    <img src="{{url_for('static', filename='img/logo.png')}}" title="Rectifier">
+    <h1>Log In</h1>
+    <form method="post" action="/logInBar">
+        <input type="text" placeholder="Enter Your Name" name="Name" required>
+        <input type="text" placeholder="Enter your email" name="Email" required>
+        <a href="/registration">Creat Account</a>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="Msgs">
+        <p>{{Msg}}</p>
+    </div>
+</div>
+<a href="/"><div class="closer"></div></a>
+{% endblock %}

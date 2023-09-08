@@ -1,0 +1,84 @@
+{% extends "index.html" %}
+{% block body %}
+<a href="/">
+    <div class="closer"></div>
+</a>
+<div class="Chatbox">
+    <div class="CommentsPleace" id="CommentsPlease">
+        <div class="CommentTaker">
+            <form method="post" id="Commentform">
+                <input id="ComCom" type="text" name="Comment" class="Comment" placeholder="Enter your comment here">
+                <div onclick="postFormData()" id="formsub">
+                    <H4>Send</H4>
+                </div>
+            </form>
+
+        </div>
+        <div class="CommentCollector">
+            {% for Comment in Comments %}
+            {% if Comment.Authority == true %}
+            <div class="CommentS" style="margin-left: calc(100% - calc(80% + 10px));background-image: linear-gradient(135deg, rgb(0, 255, 179),rgb(0, 48, 116)80%);">
+                {% if Comment.PPic == None %}
+                <img src="{{ url_for('static', filename='img/profile.webp')}}" alt="">
+                {% else %}
+                <img src="{{ url_for('static', filename='FeedBack/ProfilePic/'+ Comment.PPic)}}" alt="">
+                {% endif %}
+                <h5>{{Comment.UserName}}</h5>
+                <hr style="width: calc(100% - 20px);margin: 0;margin-left: 10px;">
+                <P> {{Comment.Comment}}</P>
+            </div>
+            {% else %}
+            <div class="CommentS">
+                {% if Comment.PPic == None %}
+                <img src="{{ url_for('static', filename='img/profile.webp')}}" alt="">
+                {% else %}
+                <img src="{{ url_for('static', filename='FeedBack/ProfilePic/'+ Comment.PPic)}}" alt="">
+                {% endif %}
+                <h5>{{Comment.UserName}}</h5>
+                <hr style="width: calc(100% - 20px);margin: 0;margin-left: 10px;">
+                <P> {{Comment.Comment}}</P>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    function postFormData() {
+        var commentInput = document.getElementById("ComCom").value;
+
+        // Prepare data to send to the server
+        var formData = new FormData();
+        formData.append("Comment", commentInput);
+
+        // Create a new XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/Community", true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Extract the .CommentCollector content from the response
+                    var responseHTML = xhr.responseText;
+                    var tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = responseHTML;
+                    var updatedCommentsHTML = tempDiv.querySelector(".CommentCollector").innerHTML;
+
+                    // Update the .CommentCollector content
+                    var commentCollector = document.querySelector(".CommentCollector");
+                    commentCollector.innerHTML = updatedCommentsHTML;
+
+                    // Clear the input field
+                    document.getElementById("ComCom").value = "";
+                } else {
+                    console.error("An error occurred while loading .CommentCollector.");
+                }
+            }
+        };
+
+        // Send the FormData to the server
+        xhr.send(formData);
+    }
+
+</script>
+{% endblock %}

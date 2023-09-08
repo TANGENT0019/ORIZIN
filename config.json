@@ -1,0 +1,15 @@
+{
+  "Params":{
+    "local_server": "True",
+    "GmailName": "Rectifier",
+    "GmailPassword": "gvvmlekcpqftscda",
+    "GmailAddress": "re2290352@gmail.com",
+    "ParthibAccount": "ts2290352@gmail.com",
+    "ThumbnailStorage": "D:\\Rectifier\\IMPLEMENTATION\\static\\FeedBack\\Thumbnail",
+    "TrailerStorage": "D:\\Rectifier\\IMPLEMENTATION\\static\\FeedBack\\Trailer",
+    "VideoStorage": "D:\\Rectifier\\IMPLEMENTATION\\static\\FeedBack\\Content",
+    "ProfilePic": "D:\\Rectifier\\IMPLEMENTATION\\static\\FeedBack\\ProfilePic",
+    "AccountNumboffund": "0xE50eB0610AB9cB0D3597D8E0DF9D35d2cFc73E2E",
+    "Privet_Key": "9fdc6e4af3559b9c92938fe81e031219a85dac6ae7898301c67719abdac172b7"
+  }
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mu/VPlayer/{{content.Product_Name}}</title>
+    <!--style and js-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='Player.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css')}}">
+    <script src="{{ url_for('static', filename='SSS.js')}}"></script>
+    <!-- favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static',filename='favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static',filename='favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='favicon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{url_for('static', filename='favicon/site.webmanifest')}}">
+    <link rel="mask-icon" href="{{url_for('static', filename='favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+    <!--Topbar-->
+    <div class="topbar"
+        style="box-shadow: 2px 2px 5px rgb(232, 58, 0) ;z-index: 10;background-color: rgba(255, 255, 255, 0.513);backdrop-filter: blur(10px);">
+        <!--log in bar-->
+        <a href="/logInBar">
+            <div class="loginbar" title="Log in">
+                {% if Comment == None or Comment is not defined %}
+                <img src="{{url_for('static', filename = 'img/profile.webp')}}"
+                    style="height: 100%;width: 100%; top: 0;border-radius: 50%;">
+                {% else %}
+                <img src="{{ url_for('static', filename='FeedBack/ProfilePic/'+ Comment.PPic)}}" alt=""
+                    style="height: 100%;width: 100%; top: 0;border-radius: 50%;">
+                {% endif %}
+            </div>
+        </a>
+        <!--search bar-->
+        <form class="input" action="/Search" method="post">
+            <input type="text" placeholder="Search" name="Search">
+            <button type="submit"><img src="{{ url_for('static', filename='img/search button.webp')}}"></button>
+        </form>
+
+        <!--loading bar <div class="lg">
+        </div>-->
+        <nav class="leftBar">
+            <ul id="leftbar">
+                <a href="/">
+                    <li id="logo" onclick="menu_bar()" style="border-radius: 10px;"><img
+                            src="{{ url_for('static', filename='img/logo.png')}}"></li>
+                </a>
+            </ul>
+        </nav>
+    </div>
+    <div class="lgsecond"></div>
+    </div>
+    <!--for body-->
+    <div class="Analytics">
+        <h1>Analytics</h1>
+    </div>
+    <!--Product List-->
+    <div class="ProductLIst">
+        {% for i in total_Purchesed %}
+        <a href="/Analytics?productName={{i.Product_Name}}"><li style="color: black;">{{i.Product_Name}}</li></a>
+        {% endfor %}
+    </div>
+    <div class="MainAnalytics">
+        <div style="top: 2.6cm;height:1cm;width: 100%;background-color: rgb(254, 254, 254);"> <h3 style="position: absolute;margin-top: 0.25cm;padding-left: 1cm;font-weight: bolder;font-family: Arial, Helvetica, sans-serif;color: black;">{{PName}}</h3></div>
+        <div class="performance">
+            {% set a = [] %}
+            {% for i in Actual_List %}
+            {% set _ = a.append('' ~ i['P_Name']) %}
+            {% endfor %}
+            {% for item in Actual_List %}
+            <li>
+                <p>{{ item['P_Name']}}</p>
+                <div class="values">
+                    {% set sum = item['data']|sum %}
+                    <input type="list" value="{{Actual_List}}" id="TotalValue" style="display:none;">
+                    <rectangle class="{{ item['P_Name']}}0"
+                        style="background-color: rgb(78, 0, 0);   height: 100%;top: 0;position: relative;float: left;text-align: center; width:16.6%;padding-bottom: 2.5px; color: white;overflow-y: hidden;">
+                        {{ item['data'][0]}}</rectangle>
+                    <rectangle class="{{ item['P_Name']}}1"
+                        style="background-color: rgb(255, 0, 0);  height: 100%;top: 0;position: relative;float: left;text-align: center;padding-bottom: 2.5px; width: 16.66%;color: white;overflow-y: hidden;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        {{ item['data'][1]}}</rectangle>
+                    <rectangle class="{{ item['P_Name']}}2"
+                        style="background-color: rgb(255, 145, 0);height: 100%;top: 0;position: relative;float: left;text-align: center;padding-bottom: 2.5px; width: 16.66%;color: white;overflow-y: hidden;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        {{ item['data'][2]}}</rectangle>
+                    <rectangle class="{{ item['P_Name']}}3"
+                        style="background-color: rgb(255, 238, 0);height: 100%;top: 0;position: relative;float: left;text-align: center;padding-bottom: 2.5px; width: 16.66%;overflow-y: hidden;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        {{ item['data'][3]}}</rectangle>
+                    <rectangle class="{{ item['P_Name']}}4"
+                        style="background-color: rgb(166, 255, 0);height: 100%;top: 0;position: relative;float: left;text-align: center;padding-bottom: 2.5px; width: 16.66%;overflow-y: hidden;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        {{ item['data'][4]}}</rectangle>
+                    <rectangle class="{{ item['P_Name']}}5"
+                        style="background-color: rgb(0, 166, 255);height: 100%;top: 0;position: relative;float: left;text-align: center;padding-bottom: 2.5px; width: 16.66%;color: white;overflow-y: hidden;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        <img src="{{url_for('static', filename = 'img/StarRating.png')}}" alt="" style="height: 100%;width: 50%;max-width: 0.5cm;">
+                        {{ item['data'][5]}}</rectangle>
+                </div>
+            </li>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var liItems = document.querySelectorAll(".performance li");
+    
+            liItems.forEach(function (liItem) {
+                var rectangleTags = liItem.querySelectorAll(".values rectangle");
+    
+                var totalValue = 0;
+                var dataValues = [];
+    
+                rectangleTags.forEach(function (rectangleTag, index) {
+                    var dataValue = parseFloat(rectangleTag.textContent);
+                    totalValue += dataValue;
+                    dataValues.push(dataValue);
+                });
+    
+                dataValues.forEach(function (dataValue, index) {
+                    var widthPercentage = (dataValue / totalValue) * 100;
+                    rectangleTags[index].style.width = widthPercentage + "%";
+                });
+            });
+        });
+    </script>
+    
+
+</body>
+
+</html>

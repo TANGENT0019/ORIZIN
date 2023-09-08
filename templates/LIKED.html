@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+{% block body %}
+<div class="Popup">
+    <h3>Liked</h3>
+    <div class="HistoryExample" id="VideoH" style="visibility: visible;">
+        {% for content in LHistory %}
+        <a href="/VideoPlayer/{{content.Content}}">
+            <li>
+                <img src="{{ url_for('static', filename='FeedBack/Thumbnail/'+ content.Thumbnail)}}" alt="">
+                <p>{{ content.Title}}</p>
+                <img id="ProPic" src="{{ url_for('static', filename='FeedBack/ProfilePic/'+ content.Profilepic)}}" alt="">
+                <h5>{{content.CreatorsName}}</h5>
+                <!--Content title, creatorname,....-->
+            </li>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+<a href="/"><div class="closer"></div></a>
+<div class="Msgs"></div>
+{% endblock %}

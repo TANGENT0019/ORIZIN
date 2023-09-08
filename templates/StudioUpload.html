@@ -1,0 +1,146 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studios</title>
+    <!--style and js-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='StudioV.css')}}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='SSS.js')}}"></script>
+    <!--For Favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static',filename='favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static',filename='favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='favicon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{url_for('static', filename='favicon/site.webmanifest')}}">
+    <link rel="mask-icon" href="{{url_for('static', filename='favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+
+    <div class="Logo" style="z-index: 5;position: absolute; left: 1cm;" title="Home_Page">
+        <a href="/"><img src="{{url_for('static', filename='img/logo.png')}}" alt=""></a>
+        <h2>ectifier</h2>
+    </div>
+    <div class="banner">
+        <h4>{{name}}.studio</h4>
+    </div>
+    <!--summan popup-->
+    <a href="/uploading">
+        <div class="UploadButton" title="Upload Feedback">
+            <img src="{{ url_for('static', filename='img/upload.webp')}}">
+        </div>
+    </a>
+    <!--pop ups-->
+    {% block body%} {%endblock%}
+    <div class="Portfolio">
+        <!--some data of the User -->
+        <div class="profile">
+            {% if ProfilePic.PPic|length == 0 or ProfilePic is not defined %}
+            <form method="post" action="/ProfilePic" id="ProfilePic" enctype="multipart/form-data">
+                <input type="file" id="pAdd" name="ProfilePic" accept="image/*">
+                <label for="pAdd" id="PAddl"><img src="{{ url_for('static', filename='img/add.webp')}}"></label>
+                <div class="Pphoto" id="Pphoto"></div>
+                <button type="submit" id="ProfilePhotoS">
+                    <p style="margin: 0;color: white;">ok</p>
+                </button>
+            </form>
+            {% else %}
+            <div class="Pphoto">
+                <img onclick="options()" id="Opener"
+                    style="height: 0.5cm;width: 0.5cm; position: absolute;top: 0;right: 0cm; z-index: 10;cursor: pointer;"
+                    src="{{ url_for('static', filename='img/options.png')}}" alt="">
+                <img src="{{ url_for('static', filename='FeedBack/ProfilePic/'+ ProfilePic.PPic)}}">
+                <div onclick="optionCloser()" id="optionCloser">
+                    <P style="height: 0.5cm;
+                                                                               width: 0.5cm; 
+                                                                               position: absolute;
+                                                                               top: 0;
+                                                                               right: 0;
+                                                                               margin: 0%;
+                                                                               text-align: start;
+                                                                               font-size: 30px;
+                                                                               z-index: 10;
+                                                                               transform: rotate(45deg);
+                                                                               cursor: pointer;">+</P>
+                </div>
+            </div>
+            <div id="Options">
+                <a href="/DelPPic?Cname={{ProfilePic.PPic}}">
+                    <li>
+                        <h4>Delete Profile pic</h4>
+                    </li>
+                </a>
+                <a href="/DelAbout?Cname={{Abouts.About}}">
+                    <li>
+                        <h4>Delete about</h4>
+                    </li>
+                </a>
+            </div>
+            {% endif %}
+            <h1>{{name}}</h1>
+            {% if Abouts is none or Abouts.About|length == 0 %}
+            <button id="Aboutxyz" onclick="About()" type="button" style="visibility: visible;">
+                <p style="color: white;margin: 0; font-size: medium;">Write something about you</p>
+            </button>
+            <div id="About_SEction" style="visibility: hidden;">
+                <form action="/AboutInput" method="post">
+                    <textarea name="About_Write" id="About_Write" cols="30" rows="10"
+                        placeholder="write about you"></textarea>
+                    <button type="submit">
+                        <p style="color: white; margin: 0; align-content: center;">Submit</p>
+                    </button>
+                </form>
+            </div>
+            {% else %}
+            <p id="My_About_content">{{Abouts.About}}</p>
+            {% endif %}
+        </div>
+        <div class="content_Galary">
+            <nav class="Content_T">
+                <ul>
+                    <H3>Feedbacks</H3>
+                </ul>
+            </nav>
+            <div class="ContentsExample_V_Show">
+                <li style="background-color:transparent;box-shadow: none;">
+                    <p style="height: 1.1cm;
+                    width: 2cm;
+                    top: 0.5cm;
+                    left: 0;
+                    text-align: center;
+                    margin-left: 0.2cm;
+                    border-top-right-radius: 12.5px;
+                    border-top-left-radius: 12.5px;">video</p>
+                    <p>Product Name</p>
+                    <p id="HDatetime" style="left: 10cm;text-align: center;">Date & Time</p>
+                </li>
+                {% for content in Contents %}
+                <li>
+                    <video controls>
+                        <source src="{{ url_for('static', filename='FeedBack/Content/' + content.Video)}}"
+                            type="video/mp4">
+                    </video>
+                    <p>{{content.Product_Name}}</p>
+                    <p id="DateTime" style="left: 10cm;text-align: center;">{{content.DateTime}}</p>
+                    <a href="/EditFeedback?Product_Name={{content.Product_Name}}">
+                        <p style="height: 1.1cm;
+                    width: 2cm;
+                    top: 0.5cm;
+                    color: white;
+                    text-shadow: 1px 1px 5px rgb(255, 34, 0);
+                    right: 0;
+                    left: auto;
+                    margin-left: 0.2cm;
+                    ">Edit</p>
+                    </a>
+                </li>
+                {% endfor %}
+            </div>
+        </div>
+</body>
+
+</html>

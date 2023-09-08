@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='Player.css')}}">
+    <script src="{{url_for('static', filename='SSS.js')}}"></script>
+    <title>Payment</title>
+    <!--favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static',filename='favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static',filename='favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='favicon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{url_for('static', filename='favicon/site.webmanifest')}}">
+    <link rel="mask-icon" href="{{url_for('static', filename='favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <div class="PaymentPage">
+        <!--Logo of rectifiter-->
+        <div class="rectifierLogo">
+            <a href="/"><img src="{{url_for('static', filename='img/logo.png')}}" alt="">
+            <h2 style="color: black;">ectifier</h2></a>
+        </div>
+        <!--Content -->
+        <div class="ContentShow">
+            
+            <!--<h3>djfsiojfisj</h3>-->
+            <p style="text-align: center;font-family: Arial, Helvetica, sans-serif;margin-bottom: 0;">Product Name</p>
+            <h2>{{Name}}</h2>
+        </div>
+        <div class="RectifierList">
+            <li >
+                <p style="left: 0;width: 1.5cm; text-align: center;">Video</p>
+                <p>Users</p>
+                <p style="right: 0;width: 1.5cm; left: auto;">Value</p>
+            </li>
+            {% for content in contents %}
+            <li>
+                <video>
+                    <source src="{{ url_for('static', filename='FeedBack/Content/' + content.Video)}}"
+                            type="video/mp4">
+                </video>
+                <p> {{content.User_name}} </p>
+                <p style="right: 0;width: 1.5cm; left: auto;">$12.5</p>
+            </li>
+            {%endfor%}
+            {% set len = contents|length %}
+        </div>
+        <!--Value-->
+        <div class="Value">
+            <h2>Total -- ${{ len*12.5 }}</h2>
+        </div>
+        <!--Owner and email-->
+        <div class="Owner">
+            
+            <h4>{{Purcheser}}</h4>
+            <h4 style="left: 50%;">{{PurcheserEmail}}</h4>
+        </div>
+        <!--Account number of metamake wallet-->
+        <div class="AccountNumber">
+            <form action="/Transaction" method="post">
+                <input type="text" name="Thumbnail" value="{{Name}}" style="display: none;">
+                <input type="text" placeholder="Enter your CryptoWallet AccountNumber" name="AccountNumber" required>
+                <input type="text" name="amount" value="{{len*12.5}}" style="display: none;">
+                <button type="submit">Purchase</button>
+            </form>
+        </div>
+        <p style="font-family: Arial, Helvetica, sans-serif;color: red;text-align: center;">{{alurt}}</p>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% block body %}
+<a href="/">
+    <div class="closer"></div>
+</a>
+<div class="Chatbox">
+    <div class="CommentsPleace" id="CommentsPlease">
+        <div style="top: 0;" class="CommentTaker">
+            <h1 style="margin: 0; top: 50%;position: relative; left: 0;transform: translate(0 ,-50%);
+            font-family: Arial, Helvetica, sans-serif;font-weight: normal;padding-left: 10px;">Notification</h1>
+            <hr style="width: calc(100% - 20px);margin: 0;margin-left: 10px;margin-top: 10px;">
+        </div>
+        <div style="top: 1.3cm;" class="CommentCollector">
+            {% if notifications|length == 0 %}
+            <h3 style="text-align: center;">No notification yet</h3>
+            {% else %}
+            {% for notification in notifications %}
+            {% if notification.Product_Name == None %}
+            <div class="CommentS">
+                <h5>{{notification.Heading}}</h5>
+                <hr style="width: calc(100% - 20px);margin: 0;margin-left: 10px;">
+                <P>{{notification.Content}}</P>
+            </div>
+            {% else %}
+            <div class="CommentS">
+                <h5>{{notification.Heading}}</h5>
+                <hr style="width: calc(100% - 20px);margin: 0;margin-left: 10px;">
+                <P>{{notification.Content}}</P>
+                <a href="/EditFeedback?Product_Name={{notification.Product_Name}}">
+                    <p
+                        style="margin-bottom: 10px;width: 1.5cm;height: 0.62cm;background-color: rgb(0, 149, 255);color: white;font-weight: bold;padding-top: 0.125cm;text-align: center;border-radius: 10px;">
+                        Edit</p>
+                </a>
+            </div>
+            {% endif %}
+
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "StudioUpload.html"%}
+{%block body%}
+<div class="upload_pop_up">
+   
+ <div class="close">
+    <a href="/studios"><H2 style="margin: 0;">+</H2></a>
+ </div>
+  <!--Image Upload-->
+  <div class="main_contant">
+    <div class="Tic_image" style="box-shadow: 0px 0px 14px green;"><img src="{{url_for('static', filename='img/Tick IMG.webp')}}"></div>
+    <h4 style="width:8cm;text-align: center; background-image: none;position: absolute ;top: calc(100% - 2.5cm);left: calc(calc(100% - 8cm) / 2);">{{Sm}}</h4>           
+</div>
+</div>
+{%endblock%}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rectifier</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="{{url_for('static', filename='Style.css')}}">
+  <script src="{{url_for('static', filename='SSS.js')}}"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!--For Favicon-->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static',filename='favicon/apple-touch-icon.png')}}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static',filename='favicon/favicon-32x32.png')}}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='favicon/favicon-16x16.png')}}">
+  <link rel="manifest" href="{{url_for('static', filename='favicon/site.webmanifest')}}">
+  <link rel="mask-icon" href="{{url_for('static', filename='favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+  <!--topBAr-->
+  <!--loader-->
+  <div id="loader"></div>
+  <div class="topBar">
+    <div class="Logo">
+      <a href="/"><img src="{{url_for('static', filename='img/logo.png')}}" alt="">
+        <h2 style="color: black;">ectifier</h2>
+      </a>
+    </div>
+    <!--searchBar-->
+    <form class="input" action="/Search" method="post">
+      <input type="text" placeholder="Search" name="Search">
+      <button type="submit"><img src="{{url_for('static', filename='img/search button.webp')}}"></button>
+      <ul id="suggestionList"></ul>
+    </form>
+    <!--Profile-->
+    <a href="/logInBar">
+      <div class="loginbar" title="Log in">
+        {% if Comment == None or Comment is not defined %}
+        <img src="{{url_for('static', filename = 'img/profile.webp')}}"
+          style="height: 100%;width: 100%; top: 0;border-radius: 50%;">
+        {% else %}
+        <img src="{{ url_for('static', filename='FeedBack/ProfilePic/'+ Comment.PPic)}}" alt=""
+          style="height: 100%;width: 100%; top: 0;border-radius: 50%;">
+        {% endif %}
+      </div>
+    </a>
+  </div>
+
+  <!--leftBAr-->
+  <div class="leftBar">
+    <ul id="leftbar">
+      <li id="hidder"></li>
+      <a href="/Analytics">
+        <li style="z-index: 4;"><img src="{{url_for('static', filename = 'img/Purchesed.webp')}}" title="Analytics"
+            alt=""></li>
+      </a>
+      <a href="/studios">
+        <li style="z-index: 3;"><img src="{{url_for('static', filename='img/Studio.webp')}}" title="Studio"
+            style="border-bottom-right-radius: 10px;" alt=""></li>
+      </a>
+      <a href="/Community">
+        <li style="z-index: 2;"><img src="{{url_for('static', filename = 'img/Liked.webp')}}" title="Community" alt="">
+        </li>
+      </a>
+      <a href="/Notification">
+        <li><img src="{{url_for('static', filename='img/Watched.webp')}}" title="Notification" alt=""></li>
+      </a>
+    </ul>
+  </div>
+  <!--homeSuggesions-->
+  <div class="Suggesions">
+    <div class="content_Galary">
+      <div class="ContentsExample_V_Show">
+        {% for content in Liked %}
+        <a href="/uploading?fortapping={{content.Product_Name}}">
+          <li>
+            <p>{{ content.Product_Name}}</p>
+            <a href="/Analytics?productName={{content.Product_Name}}">
+              <div class="addButton" title="Add your feedback"
+                style="right: 1.5cm;font-size: 28px;font-family: Arial, Helvetica, sans-serif;">A</div>
+            </a>
+            <a href="/uploading?fortapping={{content.Product_Name}}">
+              <div class="addButton" title="Add your feedback">+</div>
+            </a>
+          </li>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <!--MenuPopUps-->
+  {% block body %}
+
+  {% endblock %}
+  
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchesed</title>
+    <!--style and js-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='StudioV.css')}}">
+    <script  src="{{ url_for('static', filename='SSS.js')}}"></script>
+    <!--For Favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static',filename='favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static',filename='favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='favicon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{url_for('static', filename='favicon/site.webmanifest')}}">
+    <link rel="mask-icon" href="{{url_for('static', filename='favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <style>
+        .TOPBR{
+            height: 1.3cm;
+            width: 100%;
+            left: 0;
+            top: 0;
+            position: absolute;
+            background-color: rgb(252, 237, 224);
+            box-shadow: 0px 5px 10px rgb(255, 199, 150);
+        }
+        .logSection{
+            height: 1cm;
+            width: 4cm;
+            top: 0.15cm;
+            position: absolute;
+            left: 2cm;
+        
+        }
+        .logSection img{
+            height: 1cm;
+            width: 1cm;
+            top: 0;
+            left: 0;
+            position: absolute;
+            background-color: aqua;
+            border-radius: 50%;
+        }
+        .logSection h2{
+            height: 0.7cm;
+            width: 3cm;
+            bottom: 0;
+            margin: 0;
+            right: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: normal;
+            position: absolute;
+        }
+        .uProfile{
+            height: 1cm;
+            width: 1cm;
+            top: 0.15cm;
+            right: 2cm;
+            border-radius: 50%;
+            background-color: brown;
+            position: absolute;
+        }
+        .PurchesedHistory{
+            height: calc(100% - 2cm);
+            width: calc(100% - 4cm);
+            top: 2cm;
+            left: 50%;
+            transform: translate(-50%, 0);
+            position: absolute;
+            border-radius: 10px;
+            background-color: rgb(252, 237, 224);
+        }
+        .HistoryDetail{
+            height: calc(100% - 1.34em - 4em);
+            width: 100%;
+            top:7em;
+            left: 0;
+            position: absolute;
+            background-color: transparent;
+        }
+        .HistoryDetail li{
+            height: 1.5cm;
+            width: calc(100% - 0.5cm);
+            margin-top: 10px;
+            margin-left: 0.25cm;
+            margin-bottom: 10px;
+            list-style: none;
+            position: relative;
+            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+        }        
+    </style>
+</head>
+<body>
+    <div class="TOPBR">
+        <div class="logSection">
+            <img>
+            <h2 style="color: black;">ectifier</h2></a>
+        </div>
+        <div class="uProfile">
+            <img>
+        </div>
+    </div>
+    <div class="PurchesedHistory">
+        <h1 style="padding-left: 45px ;font-family: Arial, Helvetica, sans-serif;">History</h1>
+        <h2 style="height: auto;width: calc(50% - 0.5cm);margin-left:0.25cm; text-align: center;font-family: Arial, Helvetica, sans-serif;background-color: white;border-radius: 10px;">Together</h2>
+        <h2 style="height: auto;width: calc(50% - 0.5cm);margin-right: 0.25cm; position: absolute;right: 0; top: 1.58cm;text-align: center;font-family: Arial, Helvetica, sans-serif;background-color: white;border-radius: 10px;">indivisual</h2>        
+        <div class="HistoryDetail">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </div>
+    </div>
+</body>
+</html>

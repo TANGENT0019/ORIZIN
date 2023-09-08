@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block body %}
+<div class="login">
+    <img src="{{url_for('static', filename='img/logo.png')}}" title="Rectifier">
+    <h1>Otp Verification for {{Uname}}</h1>
+    <form method="post" action="/OtpVerification">
+        <input type="text" placeholder="Enter Your Name" style="visibility: hidden;" value="{{Uname}}" name="Uname">
+        <input type="text" placeholder="Enter your email" style="visibility: hidden;" value="{{email}}" name="U_Email">
+        <input type="number" placeholder="Enter your Otp here" name="Verification">
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<a href="/"><div class="closer"></div></a>
+{% endblock %}

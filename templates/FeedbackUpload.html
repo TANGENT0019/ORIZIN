@@ -1,0 +1,308 @@
+{% extends "StudioUpload.html"%}
+{%block body%}
+
+<div class="upload_pop_up">
+  <nav class="content_Type">
+    <ul>
+      <h3>FeedbackUploader</h3>
+    </ul>
+  </nav>
+  <div class="close">
+    <a href="/studios">
+      <H2 style="margin: 0;">+</H2>
+    </a>
+  </div>
+  <!--VideoUpload-->
+  <div class="loder" style="visibility: hidden;">
+    <h2 id="percentage">0%</h2>
+    <h3 style="color: red;">don't close this window untill you get succed massage</h3>
+  </div>
+  <div class="tic" style="visibility: hidden;">
+    <img src="{{url_for('static', filename='img/Tick IMG.webp')}}">
+    <h4 style="position: absolute;bottom: 0;height: 0.5cm;width: 2.2cm;color: green;text-align: center;">Succed!</h4>
+  </div>
+  <div class="VUpload">
+
+    <div class="Product" style="display:block;">
+      <div class="search">
+        {% if fortapping == None %}
+        <input type="text" class="PName" placeholder="find your product to feedback"
+          oninput="getSuggestions(this.value)">
+        {% else %}
+        <input type="text" class="PName" placeholder="find your product to feedback" value="{{ fortapping}}"
+          oninput="getSuggestions(this.value)">
+        {% endif %}
+        <button onclick="ProductName()">Go</button>
+        <div id="suggestionsDiv" class="Suggetion">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="FUpload" style="display: none;">
+    <div class="content">
+      <div id="V-content"></div>
+      <div class="video" id="video">
+        <input type="file" class="VINput" id="Video" name="Video" accept="video/*">
+        <label for="Video">
+          <p style="color: white;">Upload Video</p>
+        </label>
+      </div>
+    </div>
+
+    <!--rating-->
+    <div class="Rating">
+
+    </div>
+    <button type="submit" class="RatingSubmitbutton">Submit</button>
+
+    <!--adding button-->
+    <div class="addButton" onclick="Addparameter()" title="Add Unique feedback">+</div>
+    <div class="Parameter">
+      <h4 style="height: 1cm;
+              width:calc(100%) ;
+              position: absolute;
+              font-weight: bold;
+              text-align: center;
+              top: 10px;
+              left: 0;">Add Parameter</h4>
+      <input type="text" id="parameterInput" placeholder="Make a parameter">
+      <div class="CParameter" onclick="createParameter()">Create</div>
+      <div class="Cancell" onclick="CloseParameter()">+</div>
+    </div>
+
+  </div>
+</div>
+<script>
+  //-----------------------------------------------------------------------------------------Success full suggetion
+  function SuccessfullSuggetion(inputValue) {
+    console.log(inputValue);
+    document.querySelector(".PName").value = inputValue;
+  }
+  //------------------------------------------------------------------------------------------Search engine optimization
+  function getSuggestions(inputValue) {
+    $.ajax({
+      type: "POST",
+      url: "/get_suggestions",
+      data: { IncompleteData: inputValue },
+      dataType: "json",
+      success: function (data) {
+        $("#suggestionsDiv").empty();
+        for (var i = 0; i < data.length; i++) {
+          $("#suggestionsDiv").append("<li><P onclick=\"SuccessfullSuggetion(this.textContent)\">" + data[i].Product_Name + "</P></li>");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error:", error);
+      }
+    });
+  }
+  //-----------------------------------------------------------------------------------------for takeing the product name atfirst
+  function ProductName() {
+    var productName = document.querySelector(".PName").value;
+    console.log(productName)
+    if (productName == "") {
+      alert("enter product name atfirst");
+    }
+    else{
+      document.querySelector('.FUpload').style.display = 'block';
+      document.querySelector('.Product').style.display = 'none';
+      // Construct the URL with the productName parameter
+      var url = "/ProvidedParameters?productName=" + encodeURIComponent(productName);
+
+      // Send a GET request to the server
+      fetch(url)
+        .then(response => response.json()) // Parse the response as JSON
+        .then(data => {
+          // Handle the list of products received from the server
+          displayProducts(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      
+    }
+  }
+
+  // Function to display products
+  function displayProducts(products) {
+    var parametersArray = products.parameters;
+
+    for (var i = 0; i < parametersArray.length; i++) {
+      makeParameters(parametersArray[i]);
+    }
+  }
+
+  //------------------------------------------------------------------------------------------fro makeing paramerter in backend
+  function Addparameter() {
+    const ratingDiv = document.querySelector('.Rating');
+    const newLi = document.createElement('li');
+
+    const liContent = `
+    <h3>New Feedback</h3>
+    <div class="StarRating">
+      <input class="StarValue" type="range" value="0" min="0" max="5" step="1">
+      <span class="ChangeRange">0</span>
+    </div>
+  `;
+
+    newLi.innerHTML = liContent;
+    ratingDiv.appendChild(newLi);
+
+    // Add event listener to update the <span> when the range input changes
+    const rangeInput = newLi.querySelector('.StarValue');
+    const changeRangeSpan = newLi.querySelector('.ChangeRange');
+    rangeInput.addEventListener('input', function () {
+      changeRangeSpan.innerText = this.value;
+    });
+  }
+  //parameter input
+  function createParameter() {
+    const userInput = document.getElementById('parameterInput').value;
+
+    makeParameters(userInput)
+  }
+  //parameter maker
+  function makeParameters(userInput) {
+    const newLi = document.createElement('li');
+    const liContent = `
+    <h3>${userInput}</h3>
+    <div class="StarRating">
+      <input class="StarValue" type="range" value="0" min="0" max="5" step="1">
+      <span class="ChangeRange">0</span>
+    </div>
+  `;
+
+    newLi.innerHTML = liContent;
+    const ratingDiv = document.querySelector('.Rating');
+    ratingDiv.appendChild(newLi);
+
+    // Add event listener to update the <span> when the range input changes
+    const rangeInput = newLi.querySelector('.StarValue');
+    const changeRangeSpan = newLi.querySelector('.ChangeRange');
+    rangeInput.addEventListener('input', function () {
+      changeRangeSpan.innerText = this.value;
+    });
+    document.querySelector(".Parameter").style.display = "none";
+  }
+  //--------------------------------------------------------------------------------------- adding parameter popupshow
+  //adding paramiter feature
+  function Addparameter() {
+    document.querySelector(".Parameter").style.display = "block";
+  }
+  function CloseParameter() {
+    document.querySelector(".Parameter").style.display = "none";
+  }
+  //-------------------------------------------------------------------------------------- for making all feedback unique
+  const starInputs = document.querySelectorAll('.StarValue');
+  // Add event listener to each input element
+  starInputs.forEach(input => {
+    input.addEventListener('input', () => {
+      // Get the corresponding span element for the current input
+      const span = input.nextElementSibling;
+
+      // Update the value of the span with the value of the input
+      span.textContent = input.value;
+    });
+  });
+  //------------------------------------------------------------------------------------ for submit form
+  function hideElementsAndShowLoader() {
+    // Hide the required elements
+    document.querySelector('.FUpload').style.display = 'none';
+    document.querySelector('.loder').style.visibility = 'visible';
+    document.querySelector('.close').style.display = 'none';
+
+    // Show the loading message
+    var percentageElement = document.getElementById('percentage');
+    percentageElement.textContent = '0%';
+  }
+
+  function showSuccessMessage() {
+    // Hide the loader
+    document.querySelector('.loder').style.visibility = 'hidden';
+
+    // Show the success message and close button
+    document.querySelector('.tic').style.visibility = "visible";
+    document.querySelector('.close').style.display = 'block';
+  }
+  function showFalilmassage() {
+    document.querySelector('.loder').style.visibility = 'hidden';
+
+    // Show the success message and close button
+    document.querySelector('#cross').style.visibility = "visible";
+    document.querySelector('.close').style.display = 'block';
+  }
+
+  function collectDataAndSubmitForm() {
+    // Step 1: Hide elements and show loader
+    hideElementsAndShowLoader();
+
+    // Step 2: Collect data from ".Rating" elements
+    var ratingElements = document.querySelectorAll('.Rating li');
+    var Fparameters = [];
+    var RespectedRating = [];
+    var ProductNmae = document.querySelector('.PName').value;
+    var videoInput = document.querySelector('.VINput');
+    const Vfile = videoInput.files[0];
+
+    ratingElements.forEach(function (ratingElement) {
+      var h3Value = ratingElement.querySelector('h3').textContent;
+      var spanValue = ratingElement.querySelector('span.ChangeRange').textContent;
+      Fparameters.push(h3Value);
+      RespectedRating.push(spanValue);
+    });
+
+    // Step 3: Send the data to the server
+    var formData = new FormData();
+    formData.append('VideoFile', Vfile);
+    formData.append('ProductName', ProductNmae);
+    formData.append('Fparameters', JSON.stringify(Fparameters));
+    formData.append('RespectedRating', JSON.stringify(RespectedRating));
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/uploading', true);
+
+    // Update progress percentage during the upload
+    xhr.upload.onprogress = function (event) {
+      if (event.lengthComputable) {
+        var percentage = (event.loaded / event.total) * 100;
+        var percentageElement = document.getElementById('percentage');
+        percentageElement.textContent = percentage.toFixed(0) + '%';
+      }
+    };
+
+    xhr.onload = function () {
+      // Step 4: Show success message
+      if (this.status === 200) {
+        showSuccessMessage();
+      }
+      else {
+        showFalilmassage();
+      }
+
+
+      // Step 5: Print the response from the server to the console
+      console.log(xhr.responseText);
+    };
+
+    xhr.onerror = function () {
+      // Handle error cases if needed
+      showFalilmassage();
+    };
+
+    xhr.send(formData);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var submitButton = document.querySelector('button[type="submit"]');
+    submitButton.addEventListener('click', function (event) {
+      event.preventDefault(); // Prevent form submission
+      collectDataAndSubmitForm();
+    });
+  });
+
+
+
+
+</script>
+
+{%endblock%}

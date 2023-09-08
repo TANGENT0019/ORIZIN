@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mu/VPlayer/{{content.Title}}</title>
+    <!--style and js-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='Player.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css')}}">
+    <script  src="{{ url_for('static', filename='SSS.js')}}"></script>
+    <!-- favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static',filename='favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static',filename='favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='favicon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{url_for('static', filename='favicon/site.webmanifest')}}">
+    <link rel="mask-icon" href="{{url_for('static', filename='favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <div class="topbar" style="box-shadow: 2px 2px 5px rgb(232, 58, 0) ;z-index: 10;background-color: rgba(255, 255, 255, 0.513);backdrop-filter: blur(10px);">
+        <!--log in bar-->
+        <a href="/logInBar">
+        <div class="loginbar" title="sign in">
+            <img src="{{ url_for('static', filename='img/profile.webp')}}">
+        </div>
+        </a>
+        <div class="getFeedback">
+            <a href="/VideoPlayer/{{content.Content}}?Trequest=Trailer"><h3 style="margin:0;margin-top:0.25cm;padding-left: 10px;padding-right: 10px;">See Trailer</h3></a>
+        </div>
+        <!--search bar-->
+            <form class="input" action="/Search" method="post">
+                <input type="text" placeholder="Search" name="Search">
+                <button type="submit"><img src="{{ url_for('static', filename='img/search button.webp')}}"></button> 
+            </form>
+            
+        <!--loading bar <div class="lg">
+        </div>-->
+        <nav class="leftBar">
+            <ul id="leftbar">
+                <a href="/"><li id="logo" onclick="menu_bar()"><img src="{{ url_for('static', filename='img/logo.png')}}"></li></a>
+            </ul>
+        </nav>
+        </div>
+        <div class="lgsecond"></div>
+    </div>
+    <!--shere options-->
+    <div id="ShereCloser" onclick="ShereCloser()" style="visibility: hidden;"></div>
+    <div id="shereOptions" style="visibility: hidden;">
+        <h4 style="color:rgb(0, 0, 0)">Platfomes</h4>
+        <hr>
+        <ul>
+            <li onclick="shareOnFacebook()"><img src="{{url_for('static', filename='img/Facebook-logo2.jpg')}}" alt=""></li>
+            <li onclick="shareOnTwitter()"><img src="{{url_for('static', filename='img/Twitter2.jpg')}}" alt=""></li>
+            <li onclick="openInstagramProfile('@example')"><img src="{{url_for('static', filename='img/Insta2.jpg')}}" alt=""></li>
+            <li onclick="shareOnLinkedIn()"><img src="{{url_for('static', filename='img/linkedin.png')}}" alt=""></li>
+            <li onclick="shareOnPinterest()"><img src="{{url_for('static', filename='img/Pinterest-logo.png')}}" alt=""></li>
+            <li onclick="shareOnWhatsApp()"><img src="{{url_for('static', filename='img/WA.webp')}}" alt=""></li>
+            <li onclick="shareOnShareChat()"><img src="{{url_for('static', filename='img/snapchat.png')}}" alt=""></li>
+            <li onclick="shareOnDiscord()"><img src="{{url_for('static', filename='img/discord.webp')}}" alt=""></li>
+            <li onclick="shareOnTumblr()"><img src="{{url_for('static', filename='img/tumbler.png')}}" alt=""></li>
+            <li onclick="shareOnVimeo()"><img src="{{url_for('static', filename='img/Vimeo.png')}}" alt=""></li>
+            <li onclick="shareOnReddit()"><img src="{{url_for('static', filename='img/reddit-logo.png')}}" alt=""></li>
+            <li onclick="shareOnTwitch()"><img src="{{url_for('static', filename='img/tuich.png')}}" alt=""></li>
+            <li onclick="shareOnQuora()"><img src="{{url_for('static', filename='img/Quora.png')}}" alt=""></li>
+            <li onclick="shareOnWeibo()"><img src="{{url_for('static', filename='img/wibo.jpg')}}" alt=""></li>
+            <li onclick="shareOnVK()"><img src="{{url_for('static', filename='img/VK.png')}}" alt=""></li>
+        </ul>
+        <h5>Note:</h5>
+        <div class="urlofShere" style="height: 1cm;width: calc(100% - 10px);
+        margin: 0;
+        background-color: rgb(215, 215, 215);
+        border-radius: 50px;
+        padding-left: 15px;
+        overflow-x: auto;
+        white-space:nowrap;
+        align-items: center;">
+        <h5>{{ShereUrl}}</h5>
+        </div>
+        
+        <p> if there is no favorable platefome then you can copy the page url</p>
+    </div>
+    <!--Video informations-->
+    <div class="VideoInfo">
+        <div class="Video">
+            <video controls="True" autoplay >
+                <source  src="{{ url_for('static', filename='FeedBack/Content/' + content.Content)}}" type="video/mp4">
+            </video>
+            <div class="Vinfo">
+                <h4>{{content.Title}}</h4>
+                <div class="Pphoto"><img src="{{ url_for('static', filename='FeedBack/ProfilePic/'+ PP.PPic)}}"></div>
+                <h5>{{Name}}</h5>
+                <div class="options" id="Options">
+                    
+                    <li onclick="share()" ><img src="{{url_for('static', filename='img/sharee.png')}}" alt=""><p style="margin: 0;">Shere</p></li>
+                    {% if LU|length == 0 or  iGmail != 0 %}
+                        <li onclick="LIkeUpgrade()"  style="background-color: rgb(253, 69, 69); border-radius: 50px;"><img src="{{url_for('static', filename='img/likeButton.webp')}}" alt=""><p style="margin: 10px; color: white;"> {{Likes}} </p></li>
+                        <input type="text" value="{{content.Content}}" id="likeforjs" style="display: none;">
+                    {% else %}
+                        <li  style="box-shadow: 0px 0px 5px rgb(253, 69, 69); border-radius: 50px; background-color: white;"><img src="{{url_for('static', filename='img/liked.png')}}" alt=""><p style="margin: 10px; color: rgb(0, 0, 0);">{{Likes}}</p></li></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Pros">
+        <h2>Pros</h2>
+        <pre>{{content.pros}}</pre>
+    </div>
+    <div class="Cons">
+        <h2>Cons</h2>
+        <pre>{{content.cons}}</pre>
+    </div>
+    <div class="CommentsPleace" id="CommentsPlease">
+        <div class="CommentTaker">
+            <form  method="post" id="Commentform">
+                <input id="ComTitle" type="text" name="Title" value="{{content.Title}}" style="display: none;">
+                <input id="ComCom" type="text" name="Comment" class="Comment" placeholder="Enter your comment here">
+                <input id="ComCon" type="text" name="Arts" value="{{content.Content}}" style="display: none;">
+                <div onclick="postFormData()" id="formsub"><H4>Send</H4></div>
+            </form>
+
+        </div>
+        <hr style="border-color: black; top: 1cm; position: absolute;width: 100%;">
+        <div class="CommentCollector">
+            {% for Comment in Comments %}
+                <div class="CommentS">
+                    {% if Comment.PPic == "" %}
+                        <img src="{{ url_for('static', filename='img/profile.webp')}}" alt="">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='FeedBack/ProfilePic/'+ Comment.PPic)}}" alt="">
+                    {% endif %}
+                    <h5>{{Comment.UName}}</h5>
+                    <P> {{Comment.Comment}}</P>
+                    <hr style="margin-right:0 ; margin-left: 0; bottom: 0; position: absolute;">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
