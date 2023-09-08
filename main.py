@@ -720,8 +720,6 @@ def Transfer():
             print(Amount)
             from_Account = request.form.get("AccountNumber")
             try:
-
-                '''
                 # currency transfer
                 amount_in_dollars = float(Amount)
                 eth_price = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").json()[
@@ -757,7 +755,7 @@ def Transfer():
                 private_key = "SENDER_PRIVATE_KEY"  # Replace with actual private key
                 signed_txn = w3.eth.account.signTransaction(transaction, private_key)
 
-                tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)'''
+                tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
                 # Database entry
                 Total_Rectifier = ""
                 Total_Indivisual_Entry = Indivisualentry.query.filter_by(Product_Name=P_Name).all()
