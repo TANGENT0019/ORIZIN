@@ -524,7 +524,7 @@ def uploading():
                 # identification if the uploading processor is edit or new
                 Privious_Record = Indivisualentry.query.filter_by(UserEmail=session['E-user'], Product_Name=Productname).first()
                 if type(Privious_Record) is None:                           # new entry
-                    Unique_name = generate_unique_filename(VideoClip.filename)
+                    Unique_name = generate_unique_filename(secure_filename(VideoClip.filename))
                     VideoClip.save(os.path.join(app.config["VideoStorage"], Unique_name))
                     entry = Indivisualentry(Product_Name=Productname, User_name=session['user'], Points=Points,
                                             Video=Unique_name, UserEmail=session['E-user'])
@@ -541,7 +541,7 @@ def uploading():
                         Privious_Record.Video = VideoName
                         db.session.commit()
                     else:
-                        Unique_name = generate_unique_filename(VideoClip.filename)
+                        Unique_name = generate_unique_filename(secure_filename(VideoClip.filename))
                         VideoClip.save(os.path.join(app.config["VideoStorage"], Unique_name))
                         Privious_Record.Product_Name = Productname
                         Privious_Record.User_name = session['user']
