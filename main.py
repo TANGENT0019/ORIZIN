@@ -2,7 +2,6 @@ import os.path
 import uuid
 
 import requests
-import werkzeug
 from flask import Flask, render_template, request, session, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
@@ -11,6 +10,7 @@ import random
 import datetime
 from sqlalchemy import func
 from web3 import Web3
+from werkzeug.utils import secure_filename
 
 with open("config.json", "r") as c:
     params = json.load(c)["Params"]
@@ -438,9 +438,10 @@ def ProfilePic():
     if 'user' in session:
         if request.method == "POST":
             Profilepi = request.files["ProfilePic"]
+            Filen = secure_filename(Profilepi.filename)
             Gmail = session["E-user"]
             Uinfo = Profilepic.query.filter_by(UGmail=Gmail).all()
-            NewProfilePic = generate_unique_filename(Profilepi.filename)
+            NewProfilePic = generate_unique_filename(Filen)
             if len(Uinfo) == 0:
                 Profilepi.save(os.path.join(app.config["ProfilePic"], NewProfilePic))
                 entry = Profilepic(PPic=NewProfilePic, UGmail=Gmail)
