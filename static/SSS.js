@@ -498,36 +498,41 @@ function SearchCloser(){
 }
 
 
+// Function to sanitize HTML input to prevent XSS attacks
+function sanitizeHTML(input) {
+  return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 // Ajax coding
 function updateOptions(responseData) {
-  // Create a temporary div element to hold the response HTML
-  var tempDiv = document.createElement('div');
-  tempDiv.innerHTML = responseData;
-
-  // Extract the specific portion of the HTML using selectors or other methods
-  var updatedOptionsHTML = tempDiv.querySelector('#Options').innerHTML;
+  // Sanitize the response data to prevent XSS attacks
+  var sanitizedData = sanitizeHTML(responseData);
 
   // Update the specific portion of the webpage
-  document.getElementById('Options').innerHTML = updatedOptionsHTML;
+  document.getElementById('Options').innerHTML = sanitizedData;
 }
-function LIkeUpgrade(){
-  //input of the name of the content
+
+function likeUpgrade() {
+  // Input of the name of the content
   var cont = document.getElementById("likeforjs").value;
-  let c = encodeURIComponent(cont);
+  var c = encodeURIComponent(cont);
+
   console.log(cont);
   console.log("js is working");
+
   const xhr = new XMLHttpRequest();
-    xhr.open('GET','/Like?Content='+ c,  true);
-    xhr.onload = function(){
-      //for cheaking status
-      if(this.status === 200){
-        var updatedContent = xhr.responseText;
-        updateOptions(updatedContent);
-      }
-      else{
-          console.log("Some error occured");
-      }
+  xhr.open('GET', '/Like?Content=' + c, true);
+
+  xhr.onload = function () {
+    // For checking status
+    if (this.status === 200) {
+      var updatedContent = xhr.responseText;
+      updateOptions(updatedContent);
+    } else {
+      console.log("Some error occurred");
     }
+  };
+
   xhr.send();
 }
 
